@@ -13,5 +13,5 @@ eureka:
   server:
     waitTimeInMsWhenSyncEmpty: 1    #wait time for subsequent sync
   instance:
-    hostname: 172.17.0.1
+    hostname: localhost
 

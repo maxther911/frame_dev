@@ -1,0 +1,64 @@
+server:
+  port: 8085
+
+  
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.17.0.1:8761/eureka/eureka
+    registryFetchIntervalSeconds: 5
+    
+zuul:
+  sslHostnameValidationEnabled: false
+  host:
+    connect-timeout-millis: 5000000
+    socket-timeout-millis: 5000000
+  ignoredServices: '*'
+  routes:
+    cloudconfig:
+      path: /config**
+      stripPrefix: true
+      url: http://172.17.0.1:8888
+    eureka:
+      path: /eureka/**
+      stripPrefix: false
+      serviceId: eureka-service
+    auth:
+      sensitiveHeaders: 
+      path: /apirouter-wsrestsignature/**
+      stripPrefix: false
+      serviceId: token-service
+    docmanager:
+      sensitiveHeaders: 
+      path: /apirouter-rsdocmanager/**
+      stripPrefix: false
+      serviceId: docmanager-service
+    adminuser:
+      sensitiveHeaders: 
+      path: /apirouter-admin/**
+      stripPrefix: false
+      serviceId: adminuser-service
+  add-proxy-headers: true
+      
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 160000000
+ribbon:
+  OkToRetryOnAllOperations: true
+  ReadTimeout: 5000000
+  ConnectTimeout: 5000000
+  MaxAutoRetries: 5
+  MaxAutoRetriesNextServer: 5
+

@@ -1,0 +1,28 @@
+server:
+  port:  8089
+  servlet:
+    context-path: /apirouter-rsdocmanager
+  http:
+    encoding:
+      enabled: false
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.17.0.1:8761/eureka/eureka/
+    healthcheck:
+      enabled: true
+    registry-fetch-interval-seconds: 10
+  instance:
+    statusPageUrlPath: ${server.servlet.context-path}/info
+    healthCheckUrlPath: ${server.servlet.context-path}/health
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 20
+

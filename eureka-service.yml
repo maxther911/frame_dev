@@ -1,0 +1,17 @@
+server:
+  port: 8761
+  servlet:
+    context-path: /eureka
+
+eureka:
+  client:
+    #telling the server not to register himself in the service registry
+    registerWithEureka: true
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/eureka/
+  server:
+    waitTimeInMsWhenSyncEmpty: 1    #wait time for subsequent sync
+  instance:
+    hostname: 172.17.0.1
+

@@ -1,0 +1,74 @@
+server:
+  port: 8086
+  servlet:
+    context-path: /apirouter-wsrestsignature
+  http:
+    encoding:
+      enabled: false
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        hibernate:
+          show_sql: false
+          use_sql_comments: true
+  logging:
+    pattern:
+      console: '%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n'
+    config: classpath:log4j2.yml
+    level:
+      org:
+        hibernate:
+          SQL: info
+check-user-scopes: false
+spring:
+  profiles:
+    active: dev
+
+
+---
+spring:
+  profiles: dev
+  application:
+    name: token-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.17.0.1:8761/eureka/eureka/
+    healthcheck:
+      enabled: true
+    registry-fetch-interval-seconds: 10
+  instance:
+    statusPageUrlPath: ${server.servlet.context-path}/info
+    healthCheckUrlPath: ${server.servlet.context-path}/health
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 20
+    
+---
+spring:
+  profiles: prd
+  application:
+    name: token-service
+  cloud:
+    config:
+      uri: http://172.17.0.1:8888  #where the config-service is running
+      fail-fast: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/eureka/
+    healthcheck:
+      enabled: true
+    registry-fetch-interval-seconds: 10
+    fetchRegistry: true
+  instance:
+    statusPageUrlPath: ${server.servlet.context-path}/info
+    healthCheckUrlPath: ${server.servlet.context-path}/health
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 20
+
